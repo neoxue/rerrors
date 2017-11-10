@@ -28,13 +28,15 @@ type WithTypeErrors struct {
 	code      int
 }
 
-const ErrorTypeConfig = "errorTypeConfig"
-const ErrorTypeSys = "errorTypeSys"
-const ErrorTypeRuntime = "errorTypeRuntime"
-const ErrorTypeInternalRes = "errorTypeInternalRes"
-const ErrorTypeExternalRes = "errorTypeExternalRes"
-const ErrorTypeUnexpected = "errorTypeUnexpected"
-const ErrorTypeOther = "errorTypeOther"
+const (
+	ErrorTypeConfig      = "errorTypeConfig"
+	ErrorTypeSys         = "errorTypeSys"
+	ErrorTypeRuntime     = "errorTypeRuntime"
+	ErrorTypeInternalRes = "errorTypeInternalRes"
+	ErrorTypeExternalRes = "errorTypeExternalRes"
+	ErrorTypeUnexpected  = "errorTypeUnexpected"
+	ErrorTypeOther       = "errorTypeOther"
+)
 
 func NewErrors(message string, errorType string, errorCode int, data interface{}) *WithTypeErrors {
 	err := errors.New(message)
