@@ -8,8 +8,8 @@ import (
 )
 
 /*
-	WithTypeErrors
-	WithTypeErrors is errors (which is built in error)
+	Rerrors
+	Rerrors is errors (which is built in error)
 	error types:
 	use string not int, clearly
 	1, config 	error
@@ -21,7 +21,7 @@ import (
 	7, other 		 	 error
 
 */
-type WithTypeErrors struct {
+type Rerrors struct {
 	data      interface{}
 	errorType string
 	cause     error
@@ -38,9 +38,9 @@ const (
 	ErrorTypeOther       = "errorTypeOther"
 )
 
-func NewErrors(message string, errorType string, errorCode int, data interface{}) *WithTypeErrors {
+func NewErrors(message string, errorType string, errorCode int, data interface{}) *Rerrors {
 	err := errors.New(message)
-	return &WithTypeErrors{
+	return &Rerrors{
 		cause:     err,
 		errorType: errorType,
 		data:      data,
@@ -48,12 +48,12 @@ func NewErrors(message string, errorType string, errorCode int, data interface{}
 	}
 }
 
-func WrapErrors(err error, msg string, errorType string, errorCode int, data interface{}) *WithTypeErrors {
+func WrapErrors(err error, msg string, errorType string, errorCode int, data interface{}) *Rerrors {
 	if err == nil {
 		return nil
 	}
 	newerr := errors.Wrap(err, msg)
-	return &WithTypeErrors{
+	return &Rerrors{
 		cause:     newerr,
 		errorType: errorType,
 		data:      data,
@@ -61,19 +61,19 @@ func WrapErrors(err error, msg string, errorType string, errorCode int, data int
 	}
 }
 
-func (err *WithTypeErrors) Error() string {
+func (err *Rerrors) Error() string {
 	return "errorType:" + err.errorType + " errMsg:" + err.cause.Error()
 }
 
-func (err *WithTypeErrors) Cause() error {
+func (err *Rerrors) Cause() error {
 	return err.cause
 }
 
-func (err *WithTypeErrors) Type() string {
+func (err *Rerrors) Type() string {
 	return err.errorType
 }
 
-func (err *WithTypeErrors) Data() interface{} {
+func (err *Rerrors) Data() interface{} {
 	return err.data
 }
 
@@ -82,7 +82,7 @@ func (err *WithTypeErrors) Data() interface{} {
  * v|+v -> print stack exactly
  * s| print f.Error()
  */
-func (f *WithTypeErrors) Format(s fmt.State, verb rune) {
+func (f *Rerrors) Format(s fmt.State, verb rune) {
 	switch verb {
 	case 'v':
 		fmt.Fprintf(s, "errorType:%v \n", f.errorType)
@@ -97,7 +97,7 @@ func (f *WithTypeErrors) Format(s fmt.State, verb rune) {
 }
 
 /*
-func (f *WithTypeErrors) Format(s fmt.State, verb rune) {
+func (f *Rerrors) Format(s fmt.State, verb rune) {
 	switch verb {
 	case 'v':
 		if s.Flag('+') {
