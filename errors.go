@@ -16,16 +16,17 @@ import (
 	2, sys		error
 	3, runtime 	error
 	4, internal resource error
-	4, external resource error
+	5, external resource error
 	6, unexpected 		 error
-	7, other 		 	 error
-
+	7, custom 		 	 error
+	8, other 		 	 error
 */
+
 type Rerrors struct {
 	data      interface{}
 	errorType string
 	cause     error
-	code      int
+	code      string
 }
 
 const (
@@ -35,20 +36,28 @@ const (
 	ErrorTypeInternalRes = "errorTypeInternalRes"
 	ErrorTypeExternalRes = "errorTypeExternalRes"
 	ErrorTypeUnexpected  = "errorTypeUnexpected"
+	ErrorTypeCustom      = "errorTypeCustom"
 	ErrorTypeOther       = "errorTypeOther"
 )
 
-func NewErrors(message string, errorType string, errorCode int, data interface{}) *Rerrors {
-	err := errors.New(message)
+func NewErrors(msg string, errorType string, code string) *Rerrors {
+	return NewErrorsWithData(msg, errorType, code, nil)
+}
+
+func NewErrorsWithData(msg string, errorType string, code string, data interface{}) *Rerrors {
+	err := errors.New(msg)
 	return &Rerrors{
 		cause:     err,
 		errorType: errorType,
 		data:      data,
-		code:      errorCode,
+		code:      code,
 	}
 }
 
-func WrapErrors(err error, msg string, errorType string, errorCode int, data interface{}) *Rerrors {
+func WrapErrors(err error, msg string, errorType string, code string) *Rerrors {
+	return WrapErrorsWithData(err, msg, errorType, code, nil)
+}
+func WrapErrorsWithData(err error, msg string, errorType string, code string, data interface{}) *Rerrors {
 	if err == nil {
 		return nil
 	}
@@ -57,7 +66,7 @@ func WrapErrors(err error, msg string, errorType string, errorCode int, data int
 		cause:     newerr,
 		errorType: errorType,
 		data:      data,
-		code:      errorCode,
+		code:      code,
 	}
 }
 
