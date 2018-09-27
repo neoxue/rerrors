@@ -87,21 +87,22 @@ func (err *Rerrors) Data() interface{} {
 }
 
 /*
+ * Format func formats errors
  * not the same as errors
  * v|+v -> print stack exactly
  * s| print f.Error()
  */
-func (f *Rerrors) Format(s fmt.State, verb rune) {
+func (err *Rerrors) Format(s fmt.State, verb rune) {
 	switch verb {
 	case 'v':
-		fmt.Fprintf(s, "errorType:%v \n", f.errorType)
-		fmt.Fprintf(s, "errorCode:%v \nmsg:", f.code)
-		fmt.Fprintf(s, "%+v", f.Cause())
+		fmt.Fprintf(s, "errorType:%v \n", err.errorType)
+		fmt.Fprintf(s, "errorCode:%v \nmsg:", err.code)
+		fmt.Fprintf(s, "%+v", err.Cause())
 		return
 	case 's':
-		io.WriteString(s, f.Error())
+		io.WriteString(s, err.Error())
 	case 'q':
-		fmt.Fprintf(s, "%q", f.Error())
+		fmt.Fprintf(s, "%q", err.Error())
 	}
 }
 
