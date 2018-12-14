@@ -97,7 +97,8 @@ func (err *Rerrors) Format(s fmt.State, verb rune) {
 	case 'v':
 		fmt.Fprintf(s, "errorType:%v \n", err.errorType)
 		fmt.Fprintf(s, "errorCode:%v \nmsg:", err.code)
-		fmt.Fprintf(s, "%+v", err.Cause())
+		fmt.Fprintf(s, "%+v\n", err.Cause())
+		fmt.Fprintf(s, "errorData:%+v\n", err.Data())
 		return
 	case 's':
 		io.WriteString(s, err.Error())
